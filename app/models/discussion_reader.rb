@@ -25,7 +25,7 @@ class DiscussionReader < ActiveRecord::Base
   end
 
   def volume
-    super || membership.volume
+    super || (membership && membership.volume) || DiscussionReader.volumes[:normal]
   end
 
   def first_read?
