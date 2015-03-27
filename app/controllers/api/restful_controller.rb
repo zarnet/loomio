@@ -11,14 +11,6 @@ class API::RestfulController < API::BaseController
     attr_writer :resource_class
   end
 
-  rescue_from StandardError do |e|
-    if [CanCan::AccessDenied, ActionController::UnpermittedParameters].include? e.class
-      render json: {exception: e.class.to_s}, root: false, status: 400
-    else
-      raise e
-    end
-  end
-
   def index
     instantiate_collection
     respond_with_collection
@@ -157,12 +149,8 @@ class API::RestfulController < API::BaseController
         render json: [resource], root: serializer_root
       end
     else
-      respond_with_errors
+      respond_with_error(resource.errors, status: 422)
     end
-  end
-
-  def respond_with_errors
-    render json: {errors: resource.errors.as_json()}, root: false, status: 422
   end
 
   def serializer_root

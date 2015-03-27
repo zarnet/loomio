@@ -1,29 +1,32 @@
 class API::FayeController < API::BaseController
+
+  rescue_from NameError do |e| respond_with_error(e, status: 400) end
+
   def subscribe
-    if discussion_channel? and current_user.can?(:show, discussion)
-      render json: PrivatePub.subscription(channel: params[:channel], server: ENV['FAYE_URL'])
-    else
-      puts "unrecognised channel: #{params[:channel]}"
-    end
-  end
-
-  def channel_parts
-    params[:channel].split('/').reject {|i| i.blank?}
-  end
-
-  def discussion_channel?
-    channel_parts.first.split('-').first == 'discussion'
-  end
-
-  def discussion_key
-    channel_parts.first.split('-').last
-  end
-
-  def discussion
-    Discussion.find_by(key: discussion_key)
+    raise ActiveRecord::RecordNotFound unless channel_model
+    authorize! :show, channel_model
+    render json: PrivatePub.subscription(channel: params[:channel], server: ENV['FAYE_URL'])
   end
 
   def who_am_i
     render json: current_user, serializer: UserSerializer
+  end
+
+  private
+
+  def channel_model
+    @channel_model ||= channel_class.find_by(key: channel_key)
+  end
+
+  def channel_class
+    @channel_class ||= channel_parts.first.to_s.classify.constantize
+  end
+
+  def channel_key
+    @channel_key   ||= channel_parts.last
+  end
+
+  def channel_parts
+    @channel_parts ||= params[:channel].split('/').reject(&:blank?).first.split('-')
   end
 end

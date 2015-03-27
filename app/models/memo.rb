@@ -1,20 +1,12 @@
 class Memo
-  def self.publish!(thing)
-    memo = new(thing)
-    memo.publish!
+  include Publishable
+
+  def kind
+    raise NotImplementedError.new
   end
 
-  def as_hash
-    {memo: {kind: kind, data: data}}
+  def data
+    raise NotImplementedError.new
   end
 
-  def publish!
-    if ENV['FAYE_ENABLED']
-      if ENV['DELAY_FAYE']
-        PrivatePub.delay(priority: 10).publish_to(message_channel, as_hash)
-      else
-        PrivatePub.publish_to(message_channel, as_hash)
-      end
-    end
-  end
 end

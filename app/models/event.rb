@@ -1,4 +1,6 @@
 class Event < ActiveRecord::Base
+  include Publishable
+
   KINDS = %w[new_discussion discussion_title_edited discussion_description_edited new_comment
              new_motion new_vote motion_close_date_edited motion_name_edited motion_description_edited
              motion_closing_soon motion_closed motion_closed_by_user motion_outcome_created motion_outcome_updated
@@ -17,7 +19,7 @@ class Event < ActiveRecord::Base
   after_create :call_thread_item_created
   after_destroy :call_thread_item_destroyed
 
-  after_create :publish_event
+  after_create :publish!
 
   validates_inclusion_of :kind, :in => KINDS
   validates_presence_of :eventable
@@ -30,23 +32,6 @@ class Event < ActiveRecord::Base
 
   def belongs_to?(this_user)
     self.user_id == this_user.id
-  end
-
-  def publish_event
-    if message_channel
-      data = EventSerializer.new(self).as_json
-      if ENV['FAYE_ENABLED']
-        if ENV['DELAY_FAYE']
-          PrivatePub.delay(priority: 10).publish_to(message_channel, data)
-        else
-          PrivatePub.publish_to(message_channel, data)
-        end
-      end
-    end
-  end
-
-  def message_channel
-    nil
   end
 
   private
