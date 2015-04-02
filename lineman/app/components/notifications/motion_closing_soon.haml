@@ -1,4 +1,6 @@
-%a.selector-list-item-link{ng-href: '{{event.link()}}'}
+%a.selector-list-item-link{href: '{{link()}}', ng-controller: 'NotificationController'}
+  not: {{notification}}
+  event: {{event}}
   .media-left
     .thread-item-proposal-icon
   .media-body

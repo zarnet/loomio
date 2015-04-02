@@ -70,9 +70,3 @@ angular.module('loomioApp').factory 'CommentModel', (BaseModel) ->
 
     removeLikerId: (id) ->
       @likerIds = _.without(@likerIds, id)
-
-    destroy: ->
-      _.each @events, (event) ->
-        @recordStore.events.destroy(event.id)
-
-      @recordStore.comments.destroy(@id)

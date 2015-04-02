@@ -7,7 +7,7 @@ class Events::MotionClosingSoon < Event
       ThreadMailer.delay.motion_closing_soon(user, event)
     end
 
-    motion.group_members.each do |member|
+    UsersByVolumeQuery.normal_or_loud(motion.discussion).find_each do |user|
       event.notify!(member)
     end
 
