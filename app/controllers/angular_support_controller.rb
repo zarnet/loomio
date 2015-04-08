@@ -22,6 +22,13 @@ class AngularSupportController < ApplicationController
 
   DISCUSSION_TITLE = 'What star sign are you?'
 
+  def discussion_url(discussion)
+    "http://localhost:8000/d/#{discussion.key}/"
+  end
+
+  def group_url(group)
+    "http://localhost:8000/g/#{group.key}/"
+  end
   def connect_private_pub
   end
 
@@ -31,13 +38,13 @@ class AngularSupportController < ApplicationController
     testing_group.update! members_can_add_members: true
     introduce_patrick_to_max
 
-    redirect_to testing_group, port: 8000
+    redirect_to group_url(testing_group)
   end
 
   def setup_for_add_comment
     reset_database
     sign_in patrick
-    redirect_to testing_discussion, port: 8000
+    redirect_to discussion_url(testing_discussion)
   end
 
   def setup_for_like_comment
@@ -49,7 +56,7 @@ class AngularSupportController < ApplicationController
                                       discussion: testing_discussion,
                                       body: 'Hi Patrick, lets go dancing'), actor: jennifer)
 
-    redirect_to testing_discussion, port: 8000
+    redirect_to discussion_url(testing_discussion)
   end
 
   def setup_for_vote_on_proposal
@@ -62,7 +69,7 @@ class AngularSupportController < ApplicationController
                         actor: patrick)
 
 
-    redirect_to testing_discussion, port: 8000
+    redirect_to discussion_url(testing_discussion)
   end
 
   private
