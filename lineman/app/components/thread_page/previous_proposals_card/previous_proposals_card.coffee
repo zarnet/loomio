@@ -1,10 +1,8 @@
 angular.module('loomioApp').directive 'previousProposalsCard', ->
-  scope: {}
-  bindToController: {discussion: '='}
+  scope: {discussion: '='}
   restrict: 'E'
   templateUrl: 'generated/components/thread_page/previous_proposals_card/previous_proposals_card.html'
   replace: true
-  controllerAs: 'previousProposalsCard'
   controller: ($scope, Records, ProposalFormService) ->
 
     $scope.selectedProposalId = 0
@@ -12,10 +10,10 @@ angular.module('loomioApp').directive 'previousProposalsCard', ->
     $scope.$on 'collapseProposal', (event) ->
       $scope.selectedProposalId = 0
 
-    @proposals = ->
-      @discussion.closedProposals()
+    $scope.proposals = ->
+      $scope.discussion.closedProposals()
 
-    @selectProposal = (proposal) =>
+    $scope.selectProposal = (proposal) =>
       $scope.selectedProposalId = proposal.id
 
     return

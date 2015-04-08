@@ -2,7 +2,7 @@ angular.module('loomioApp').factory 'EventModel', (BaseModel) ->
   class EventModel extends BaseModel
     @singular: 'event'
     @plural: 'events'
-    @indices: ['discussion_id']
+    @indices: ['id', 'discussionId']
 
     @eventTypeMap: {
       'user_added_to_group':         'group',
@@ -20,6 +20,9 @@ angular.module('loomioApp').factory 'EventModel', (BaseModel) ->
       'comment_replied_to':          'comment',
       'user_mentioned':              'comment'
     }
+
+    membership: ->
+      @recordStore.memberships.find(@membershipId)
 
     membershipRequest: ->
       @recordStore.membershipRequests.find(@membershipRequestId)

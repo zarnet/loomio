@@ -2,6 +2,7 @@ angular.module('loomioApp').factory 'ProposalModel', (BaseModel) ->
   class ProposalModel extends BaseModel
     @singular: 'proposal'
     @plural: 'proposals'
+    @indices: ['id', 'key', 'discussionId']
 
     initialize: (data) ->
       @closingAt = moment().add(3, 'days')
@@ -42,8 +43,7 @@ angular.module('loomioApp').factory 'ProposalModel', (BaseModel) ->
       @author().name
 
     isActive: ->
-      #!(@closedAt? and @closedAt.isValid())
-      !@closedAt? or !@closedAt.isValid()
+      !@closedAt?
 
     uniqueVotesByUserId: ->
       votesByUserId = {}

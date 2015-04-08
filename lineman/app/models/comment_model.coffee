@@ -2,7 +2,7 @@ angular.module('loomioApp').factory 'CommentModel', (BaseModel) ->
   class CommentModel extends BaseModel
     @singular: 'comment'
     @plural: 'comments'
-    @indices: ['discussionId', 'authorId']
+    @indices: ['id', 'discussionId', 'authorId']
 
     initialize: (data) ->
       @updateFromJSON(data)
@@ -44,6 +44,7 @@ angular.module('loomioApp').factory 'CommentModel', (BaseModel) ->
       @recordStore.users.find(@authorId)
 
     parent: ->
+      console.log 'comment parent:', @parentId
       @recordStore.comments.find(@parentId)
 
     discussion: ->

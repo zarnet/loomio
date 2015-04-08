@@ -5,18 +5,19 @@ angular.module('loomioApp').directive 'notifications', ->
   replace: true
   controller: ($scope, UserAuthService, Records, CurrentUser) ->
 
+    # todo
+    # comment_replied_to
+    #'membership_request_approved',
     kinds = [
-      #'comment_liked',
-      'motion_closing_soon'
-      #'motion_closed',
-      #'comment_liked',
+      'comment_liked',
+      'motion_closing_soon',
       #'comment_replied_to',
-      #'user_mentioned',
-      #'membership_requested',
+      'user_mentioned',
+      'membership_requested',
       #'membership_request_approved',
-      #'user_added_to_group',
-      #'motion_closing_soon',
-      #'motion_outcome_created'
+      'user_added_to_group',
+      'motion_closing_soon',
+      'motion_outcome_created'
     ]
 
     Records.notifications.fetch()
@@ -28,11 +29,5 @@ angular.module('loomioApp').directive 'notifications', ->
 
     $scope.notifications = =>
       @notificationsView.data()
-
-    #$scope.notificationKinds = =>
-      #_.map @notificationsView.data(), (n) ->
-        #n.event().kind
-
-
 
     return
