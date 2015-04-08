@@ -3,16 +3,19 @@ class AngularSupportController < ApplicationController
 
   USER_PARAMS = {name: 'Patrick Swayze',
                  email: 'patrick_swayze@loomio.org',
-                 password: 'gh0st'}
+                 password: 'gh0stmovie',
+                 angular_ui_enabled: true}
 
   COMMENTER_PARAMS = {name: 'Jennifer Grey',
                       email: 'jennifer_grey@loomio.org',
-                      password: 'gh0st'}
+                      password: 'gh0stmovie',
+                      angular_ui_enabled: true}
 
   INVITEE_PARAMS = {name: 'Max Von Sydow',
                     email: 'max@loomio.org',
-                    password: 'gh0st',
-                    username: 'mingthemerciless'}
+                    password: 'gh0stmovie',
+                    username: 'mingthemerciless',
+                    angular_ui_enabled: true}
 
   GROUP_NAME = 'Dirty Dancing Shoes'
   OTHER_GROUP_NAME = 'Wendigo Winnebagos'
@@ -28,13 +31,13 @@ class AngularSupportController < ApplicationController
     testing_group.update! members_can_add_members: true
     introduce_patrick_to_max
 
-    redirect_to_group
+    redirect_to testing_group, port: 8000
   end
 
   def setup_for_add_comment
     reset_database
     sign_in patrick
-    redirect_to_discussion
+    redirect_to testing_discussion, port: 8000
   end
 
   def setup_for_like_comment
@@ -46,7 +49,7 @@ class AngularSupportController < ApplicationController
                                       discussion: testing_discussion,
                                       body: 'Hi Patrick, lets go dancing'), actor: jennifer)
 
-    redirect_to_discussion
+    redirect_to testing_discussion, port: 8000
   end
 
   def setup_for_vote_on_proposal
@@ -59,22 +62,12 @@ class AngularSupportController < ApplicationController
                         actor: patrick)
 
 
-    redirect_to_discussion
+    redirect_to testing_discussion, port: 8000
   end
 
   private
   def prevent_production_destruction
     raise "No way!" if Rails.env.production?
-  end
-
-  def redirect_to_discussion
-    ENV['ANGULAR_HOMEPAGE'] = "/d/#{testing_discussion.key}"
-    redirect_to "http://localhost:8000/angular"
-  end
-
-  def redirect_to_group
-    ENV['ANGULAR_HOMEPAGE'] = "/g/#{testing_group.key}"
-    redirect_to "http://localhost:8000/angular"
   end
 
   def patrick
@@ -102,7 +95,7 @@ class AngularSupportController < ApplicationController
   end
 
   def introduce_patrick_to_max
-    group = Group.create! name: OTHER_GROUP_NAME, privacy: 'private'
+    group = Group.create! name: OTHER_GROUP_NAME
     group.add_member! patrick
     group.add_member! max
   end
@@ -124,7 +117,7 @@ class AngularSupportController < ApplicationController
     jennifer = User.create!(COMMENTER_PARAMS)
     max = User.create!(INVITEE_PARAMS)
 
-    group = Group.create!(name: GROUP_NAME, privacy: 'private')
+    group = Group.create!(name: GROUP_NAME)
 
     group.add_member! patrick
     group.add_member! jennifer
