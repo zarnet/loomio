@@ -1,13 +1,9 @@
 module.exports = class DiscussionPage
   load: ->
     browser.get('http://localhost:8000/angular_support/setup_for_add_comment')
-    element(By.css('.cuke-nav-inbox-btn')).click()
-    element.all(By.css('.cuke-inbox-item')).first().click()
 
   loadWithActiveProposal: ->
     browser.get('http://localhost:8000/angular_support/setup_for_vote_on_proposal')
-    element(By.css('.cuke-nav-inbox-btn')).click()
-    element.all(By.css('.cuke-inbox-item')).first().click()
 
   addComment: (body) ->
     element(By.css('.cuke-comment-field')).sendKeys('hi this is my comment')
