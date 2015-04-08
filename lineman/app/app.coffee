@@ -34,6 +34,9 @@ angular.module('loomioApp').controller 'AppController', ($scope, $filter, $rootS
   $scope.$on 'setTitle', (event, title) ->
     angular.element.find('title')[0].text = _.trunc(title, 300) + ' | Loomio'
 
+  $scope.$on 'pageError', (event, error) ->
+    $scope.pageError = error
+
   $scope.keyDown = (event) -> KeyEventService.broadcast event
 
   $router.config([
@@ -50,4 +53,5 @@ angular.module('loomioApp').controller 'AppController', ($scope, $filter, $rootS
     {path: '/g/:key', component: 'groupPage' },
     {path: '/g/:key/:stub', component: 'groupPage' },
   ]);
+
   return
