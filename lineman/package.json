@@ -20,7 +20,6 @@
     "grunt-ng-annotate": "latest",
     "grunt-sass": "0.18.1",
     "lineman": "^0.36.0",
-    "node-sass": "^3.0.0-beta.5"
   },
   "engines": {
     "node": "~>0.10.5",
