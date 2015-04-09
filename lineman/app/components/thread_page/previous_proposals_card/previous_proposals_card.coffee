@@ -7,6 +7,10 @@ angular.module('loomioApp').directive 'previousProposalsCard', ->
 
     $scope.selectedProposalId = 0
 
+    $scope.anyProposals = ->
+      $scope.discussion.closedProposals().length > 0
+
+
     $scope.$on 'collapseProposal', (event) ->
       $scope.selectedProposalId = 0
 

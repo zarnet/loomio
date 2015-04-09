@@ -6,19 +6,8 @@ angular.module('loomioApp').factory 'DiscussionModel', (BaseModel) ->
 
     setupViews: ->
       @setupView 'comments'
-      @setupView 'proposals', 'createdAt', true
       @setupView 'events', 'sequenceId'
-
-      @activeProposalView = @recordStore.proposals.collection.addDynamicView("#{@id}-activeProposal")
-      @activeProposalView.applyFind('discussionId': @id)
-      @activeProposalView.applyFind('id': {'$gt': 0})
-      @activeProposalView.applyFind('closedAt': {'$eq': null})
-      @activeProposalView.applySimpleSort('createdAt', true)
-
-      @closedProposalsView = @recordStore.proposals.collection.addDynamicView("#{@id}-closedProposals")
-      @closedProposalsView.applyFind('discussionId': @id)
-      @closedProposalsView.applyFind('closedAt': {'$gt': 0})
-      @closedProposalsView.applySimpleSort('createdAt', true)
+      @setupView 'proposals', 'createdAt', true
 
     translationOptions: ->
       title:     @title
@@ -45,14 +34,19 @@ angular.module('loomioApp').factory 'DiscussionModel', (BaseModel) ->
     proposals: ->
       @proposalsView.data()
 
+    activeProposals: ->
+      _.filter @proposalsView.data(), (proposal) ->
+        proposal.isActive()
+
     closedProposals: ->
-      @closedProposalsView.data()
+      _.reject @proposalsView.data(), (proposal) ->
+        proposal.isActive()
 
     anyClosedProposals: ->
       _.some(@closedProposals())
 
     activeProposal: ->
-      _.first(@activeProposalView.data())
+      _.first(@activeProposals())
 
     hasActiveProposal: ->
       @activeProposal()?

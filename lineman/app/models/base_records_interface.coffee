@@ -8,6 +8,7 @@ angular.module('loomioApp').factory 'BaseRecordsInterface', (RestfulClient, $q) 
       @restfulClient = new RestfulClient(@model.plural)
 
       @restfulClient.onSuccess = (response) =>
+        console.log 'importing ', response
         @recordStore.import(response.data)
 
       @restfulClient.onFailure = (response) ->

@@ -1,4 +1,4 @@
-%section.previous-proposals-card{role: 'region', aria-labelledby: 'previous-proposals-card-heading', ng-if: 'discussion'}
+%section.previous-proposals-card{role: 'region', aria-labelledby: 'previous-proposals-card-heading', ng-show: 'anyProposals()'}
   .card-title#previous-proposals-card-heading{translate: 'previous_proposals_card.heading', role: 'heading'}
 
   .wrap{ng-repeat: 'proposal in proposals()'}

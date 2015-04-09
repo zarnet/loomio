@@ -43,7 +43,11 @@
 
     %start_proposal_card{discussion: 'threadPage.discussion'}
 
-    .wrap{ng-if: 'threadPage.discussion.activeProposal()'}
+    .thing
+      actie proposal{{threadPage.discussion.hasActiveProposal()}}
+      {{ threadPage.discussion.activeProposal() }}
+      closed? {{threadPage.discussion.anyClosedProposals()}}
+    .wrap{ng-if: 'threadPage.discussion.hasActiveProposal()'}
       %current_proposal_card{proposal: 'threadPage.discussion.activeProposal()'}
 
     .wrap{ng-if: 'threadPage.discussion.anyClosedProposals()'}
